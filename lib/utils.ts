@@ -109,7 +109,12 @@ export const getImageSize = (
   return image?.[dimension] || 1000;
 };
 
-// DOWNLOAD IMAGE
+/**
+ * Download a file from a URL and save it to the user's device.
+ * @param url - The URL of the file to download.
+ * @param filename - The name of the file to save.
+ * @example download("https://example.com/image.png", "image");
+ */
 export const download = (url: string, filename: string) => {
   if (!url) {
     throw new Error("Resource URL not provided! You need to provide one");
@@ -130,7 +135,16 @@ export const download = (url: string, filename: string) => {
     .catch((error) => console.log({ error }));
 };
 
-// DEEP MERGE OBJECTS
+/**
+ * Deep merge two objects together and return a new object with the merged values from both objects.
+ * @param obj1
+ * @param obj2
+ * @example
+ * const obj1 = { a: 1, b: { c: 2 } };
+ * const obj2 = { b: { d: 3 } };
+ * const merged = deepMergeObjects(obj1, obj2);
+ * console.log(merged); // { a: 1, b: { c: 2, d: 3 } }
+ */
 export const deepMergeObjects = (obj1: any, obj2: any) => {
   if (obj2 === null || obj2 === undefined) {
     return obj1;
