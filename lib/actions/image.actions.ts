@@ -98,10 +98,12 @@ export async function getAllImages({
   limit = 9,
   page = 1,
   searchQuery = "",
+  onlyPublic = false,
 }: {
   limit?: number;
   page: number;
   searchQuery?: string;
+  onlyPublic?: boolean;
 }) {
   try {
     await connectToDatabase();
@@ -125,14 +127,16 @@ export async function getAllImages({
 
     const resourceIds = resources.map((resource: any) => resource.public_id);
 
-    let query = {};
+    let query: any = {};
 
     if (searchQuery) {
-      query = {
-        publicId: {
-          $in: resourceIds,
-        },
+      query.publicId = {
+        $in: resourceIds,
       };
+    }
+
+    if (onlyPublic) {
+      query.isPublic = true;
     }
 
     const skipAmount = (Number(page) - 1) * limit;

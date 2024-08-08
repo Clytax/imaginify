@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +31,7 @@ import {
   transformationTypes,
 } from "@/constants";
 import { CustomField } from "./CustomField";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import MediaUploader from "./MediaUploader";
 import TransformedImage from "./TransformedImage";
@@ -39,6 +40,8 @@ import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.actions";
 import { useRouter } from "next/navigation";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
+import { Checkbox } from "../ui/checkbox";
+import { CheckboxProps } from "@radix-ui/react-checkbox";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -64,8 +67,8 @@ const TransformationForm = ({
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
   const [isPending, startTransition] = useTransition();
+  const [isPublic, setIsPublic] = useState<any>(false);
   const router = useRouter();
-
   const initialValues =
     data && action === "Update"
       ? {
@@ -107,6 +110,7 @@ const TransformationForm = ({
         aspectRatio: values.aspectRatio,
         prompt: values.prompt,
         color: values.color,
+        isPublic: isPublic,
       };
 
       if (action === "Add") {
@@ -332,6 +336,25 @@ const TransformationForm = ({
           >
             {isTransforming ? "Transforming..." : "Apply Transformation"}
           </Button>
+
+          {/* Checkbox to make image public */}
+          <div className="flex items-center space-x-2 self-center">
+            <Checkbox
+              id="public-checkbox"
+              value="public-checkbox"
+              checked={isPublic}
+              onCheckedChange={(checked: CheckboxPrimitive.CheckedState) => {
+                console.log(checked);
+                setIsPublic(checked);
+              }}
+            />
+            <label
+              htmlFor="public-checkbox"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Make image public (Visible on the homepage)
+            </label>
+          </div>
           <Button
             type="submit"
             className="submit-button capitalize"

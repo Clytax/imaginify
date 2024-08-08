@@ -73,14 +73,21 @@ export async function deleteUser(clerkId: string) {
   }
 }
 
-// USE CREDITS
-export async function updateCredits(userId: string, creditFee: number) {
+/**
+ *
+ * @param userId - User ID
+ * @param creditAmount - Credit amount to update
+ * @returns Updated user credits object
+ * @example
+ * { _id: "userId", creditBalance: 0 } updateCredits("userId", 100) => { _id: "userId", creditBalance: 100 }
+ */
+export async function updateCredits(userId: string, creditAmount: number) {
   try {
     await connectToDatabase();
 
     const updatedUserCredits = await User.findOneAndUpdate(
       { _id: userId },
-      { $inc: { creditBalance: creditFee } },
+      { $inc: { creditBalance: creditAmount } },
       { new: true }
     );
 

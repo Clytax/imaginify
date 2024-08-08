@@ -31,6 +31,7 @@ declare type AddImageParams = {
     aspectRatio: string | undefined;
     prompt: string | undefined;
     color: string | undefined;
+    isPublic: boolean;
   };
   userId: string;
   path: string;
